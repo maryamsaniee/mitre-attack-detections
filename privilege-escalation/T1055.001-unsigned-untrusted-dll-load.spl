@@ -1,0 +1,9 @@
+# Detection: Identify DLL loads with missing or untrusted signature metadata.
+# MITRE ATT&CK Technique: Unconfirmed - Sysmon Event ID 7 alone does not establish DLL injection.
+# Review before publication: Validate Sysmon Event ID 7 fields, hash extraction, and DLL filtering.
+
+search index=wineventlog sourcetype=Sysmon EventCode=7 Company="-" Signature="-" Signed=false
+| rex field=Hashes "MD5=(?<Hash_MD5>.*)",SHA256="
+| table Image,ImageLoaded,Description,technique_name,Company,Signed,Signature,Computer,Hash_MD5
+| dedup Image,ImageLoaded,Description,technique_name,Company,Signed,Signature,Computer,Hash_MD5
+| search ImageLoaded!="*.exe"
