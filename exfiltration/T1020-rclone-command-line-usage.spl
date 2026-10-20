@@ -1,0 +1,18 @@
+# Detects rclone.exe command-line arguments that may indicate file transfer and automated data exfiltration.
+# MITRE ATT&CK Technique: T1020 - Automated Exfiltration
+# Tactic: Exfiltration (TA0010)
+# Review before publication: validate process field mappings and distinguish suspicious transfers from legitimate rclone activity.
+
+index=windows_logs process_name="rclone.exe"
+| where like(cmdline, "%copy%")
+    OR like(cmdline, "%mega%")
+    OR like(cmdline, "%pcloud%")
+    OR like(cmdline, "%ftp%")
+    OR like(cmdline, "%--config%")
+    OR like(cmdline, "%--progress%")
+    OR like(cmdline, "%--no-check-certificate%")
+    OR like(cmdline, "%--ignore-existing%")
+    OR like(cmdline, "%--auto-confirm%")
+    OR like(cmdline, "%--transfers%")
+    OR like(cmdline, "%--multi-thread-streams%")
+| table _time host user process_name cmdline
