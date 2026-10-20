@@ -1,0 +1,5 @@
+# Detects PowerShell execution of the Install-SSP command associated with Security Support Provider persistence.
+# MITRE ATT&CK Technique: T1547.005 - Security Support Provider
+# Review before publication: validate the sysmon macro and confirm that Description and CommandLine fields match the expected events.
+
+`sysmon` Description="Windows PowerShell" CommandLine="*Install-SSP*"
