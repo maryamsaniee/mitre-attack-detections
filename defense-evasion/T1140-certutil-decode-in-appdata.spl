@@ -1,5 +1,7 @@
-# MITRE ATT&CK Technique: T1140
-# Tactic: Defense Evasion
-# Review before publication: validate field mappings and remove internal environment details.
+# Detects certutil.exe decoding activity targeting files under an AppData path.
+# MITRE ATT&CK Technique: T1140 - Deobfuscate/Decode Files or Information
+# Tactic: Defense Evasion (TA0005)
+# Review before publication: validate Sysmon Event ID 1 field mappings and test for false positives.
 
-index=wineventlog sourcetype=Sysmon EventCode=1 process_name="certutil.exe" CommandLine="* -decode AppData\\*"
+index=windows_logs sourcetype=Sysmon EventCode=1 Image="*\\certutil.exe" CommandLine="* -decode *AppData\\*"
+| table _time host User Image CommandLine ParentImage
