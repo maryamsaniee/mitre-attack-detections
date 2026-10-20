@@ -1,6 +1,7 @@
-# MITRE ATT&CK Technique: T1218.005
-# Tactic: Defense Evasion
-# Review before publication: verify macro dependencies and remove internal environment details.
+# Detects mshta.exe execution with a JavaScript command-line argument, which may indicate suspicious script execution.
+# MITRE ATT&CK Technique: T1218.005 - Mshta
+# Tactic: Defense Evasion (TA0005)
+# Review before publication: validate sysmon macro field mappings and test for false positives.
 
-search `sysmon` EventCode=1 process_name=mshta.exe CommandLine=*javascript:*
-| table Computer ParentImage ParentCommandLine process CommandLine user LogonGuid
+`sysmon` EventCode=1 process_name="mshta.exe" CommandLine="*javascript:*"
+| table _time Computer ParentImage ParentCommandLine process CommandLine user LogonGuid
