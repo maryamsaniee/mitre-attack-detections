@@ -1,5 +1,14 @@
-# MITRE ATT&CK Technique: T1070.003
-# Tactic: Defense Evasion
-# Review before publication: validate field mappings and test for false positives.
+# Detects PowerShell commands that may clear or disable saving of console history.
+# MITRE ATT&CK Technique: T1070.003 - Clear Command History
+# Tactic: Defense Evasion (TA0005)
+# Review before publication: validate Sysmon Event ID 1 command-line logging and test command patterns for false positives.
 
-index=wineventlog sourcetype=Sysmon EventCode=1 (CommandLine="*rm (Get-PSReadlineOption).HistorySavePath*" OR CommandLine="*del (Get-PSReadlineOption).HistorySavePath*" OR CommandLine="*Set-PSReadlineOption –HistorySaveStyle SaveNothing*" OR CommandLine="*Remove-Item (Get-PSReadlineOption).HistorySavePath*" OR CommandLine="del*Microsoft\\Windows\\Powershell\\PSReadline\\ConsoleHost_history.txt")
+index=windows_logs sourcetype=Sysmon EventCode=1
+(
+    CommandLine="*rm (Get-PSReadlineOption).HistorySavePath*"
+    OR CommandLine="*del (Get-PSReadlineOption).HistorySavePath*"
+    OR CommandLine="*Set-PSReadlineOption*HistorySaveStyle*SaveNothing*"
+    OR CommandLine="*Remove-Item (Get-PSReadlineOption).HistorySavePath*"
+    OR CommandLine="*ConsoleHost_history.txt*"
+)
+| table _time host User Image CommandLine ParentImage
