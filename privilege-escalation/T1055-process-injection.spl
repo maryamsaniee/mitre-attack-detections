@@ -1,0 +1,6 @@
+# Detection: Detect CreateRemoteThread activity that may indicate process injection.
+# MITRE ATT&CK Technique: T1055 - Process Injection
+# Review before publication: Validate Sysmon Event ID 8 telemetry and field names in the target environment.
+
+search index=wineventlog sourcetype=Sysmon EventCode=8
+|fields SourceImage,TargetImage,Computer,StartModule,StartFunction
