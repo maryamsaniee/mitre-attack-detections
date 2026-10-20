@@ -1,0 +1,10 @@
+# Detects registry changes or reg.exe commands involving the Windows UserInitMprLogonScript logon-script setting.
+# MITRE ATT&CK Technique: T1037.001 - Logon Script (Windows)
+# Review before publication: validate Sysmon event IDs, TargetObject values, and field mappings.
+
+index=wineventlog sourcetype=Sysmon
+(
+    (EventCode=1 Image="C:\\Windows\\System32\\reg.exe" CommandLine="*add*\\Environment*UserInitMprLogonScript")
+    OR
+    ((EventCode=12 OR EventCode=14 OR EventCode=13) TargetObject="*\\Environment*UserInitMprLogonScript")
+)
