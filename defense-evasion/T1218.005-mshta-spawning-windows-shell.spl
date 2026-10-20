@@ -1,0 +1,5 @@
+# MITRE ATT&CK Technique: T1218.005
+# Tactic: Defense Evasion
+# Review before publication: verify macro dependencies and remove internal environment details.
+
+`sysmon` EventCode=1 ParentImage=*\\mshta.exe (process_name="cmd.exe" OR process_name="powershell.exe" OR process_name="wscript.exe" OR process_name="cscript.exe" OR process_name="sh.exe" OR process_name="bash.exe")
