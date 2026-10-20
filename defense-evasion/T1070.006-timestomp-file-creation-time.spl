@@ -1,0 +1,5 @@
+# Detection: Detect changes to the creation time of executable and DLL files.
+# MITRE ATT&CK Technique: T1070.006 - Timestomp
+# Review before publication: Validate Sysmon Event ID 2 coverage and field names in the target environment.
+
+search index=wineventlog sourcetype=Sysmon EventCode=2 TargetFilename IN("*.exe","*.dll")
