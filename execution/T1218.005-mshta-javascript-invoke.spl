@@ -1,0 +1,6 @@
+# MITRE ATT&CK Technique: T1218.005
+# Tactic: Defense Evasion
+# Review before publication: verify macro dependencies and remove internal environment details.
+
+search `sysmon` EventCode=1 process_name=mshta.exe CommandLine=*javascript:*
+| table Computer ParentImage ParentCommandLine process CommandLine user LogonGuid
