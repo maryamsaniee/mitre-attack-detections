@@ -1,0 +1,6 @@
+# MITRE ATT&CK: T1059.001
+# Tactic: Execution
+# Review before publication: validate SPL, macro dependencies, and internal paths.
+
+search `sysmon` EventCode=1 process_name=powershell.exe (*-W*Hidden* OR *-nologo* OR *IEX* OR *Out-MiniDump* OR *-enc* OR *-EncodedCommand* OR *DownloadString* OR *DownloadFile* OR *DownloadData* OR *ShellExecute* OR *Invoke-Mimikatz* OR *schtasks*create* OR *Webclient* OR *FromBase64String* OR *IO.StreamReader* OR *IO.MemoryStream* OR *IO.Compression.DeflateStream*) NOT (C:\windows\ccm\)
+| table _time, host, process, CommandLine, ParentProcessId, ParentImage, ParentCommandLine, User
