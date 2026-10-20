@@ -1,8 +1,13 @@
-# Title: Endpoint - IOC - Powershell Suspicious Strings
-# MITRE ATT&CK: T1059.001
-# Tactic: Execution
-# Source owner in Splunk export: saneipour
-# Review before publication: validate SPL and remove internal environment details.
+# Detects PowerShell process events containing command-line patterns such as Invoke, IEX, or Download.
+# MITRE ATT&CK Technique: T1059.001 - PowerShell
+# Tactic: Execution (TA0002)
+# Review before publication: validate Sysmon field mappings and test for false positives.
 
-index=wineventlog sourcetype=Sysmon EventCode=1 process_name=powershell.exe Invoke* OR IEX OR Download*
-| table _time, host, ProcessID, process, CommandLine, ParentProcessId, ParentImage, ParentCommandLine
+index=windows_logs sourcetype=Sysmon EventCode=1
+| where like(lower(process), "%powershell.exe%")
+    AND (
+        like(lower(CommandLine), "%invoke%")
+        OR like(lower(CommandLine), "%iex%")
+        OR like(lower(CommandLine), "%download%")
+    )
+| table _time host ProcessID process CommandLine ParentProcessId ParentImage ParentCommandLine
