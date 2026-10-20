@@ -1,7 +1,8 @@
+
 # Detects potential LSASS memory access associated with credential dumping.
-# MITRE ATT&CK Technique: T1003.001
-# Tactic: Credential Access
+# MITRE ATT&CK Technique: T1003.001 - LSASS Memory
+# Tactic: Credential Access (TA0006)
 # Review before publication: validate Sysmon Event ID 10 field mappings and test for false positives.
 
 `sysmon` EventCode=10 TargetImage="C:\\windows\\system32\\lsass.exe" (CallTrace="*dbghelp.dll*" OR CallTrace="*dbgcore.dll*")
-| table _time host SourceProcessId SourceImage
+| table _time host SourceProcessId SourceImage TargetImage
