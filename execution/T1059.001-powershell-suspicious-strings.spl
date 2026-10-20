@@ -1,0 +1,8 @@
+# Title: Endpoint - IOC - Powershell Suspicious Strings
+# MITRE ATT&CK: T1059.001
+# Tactic: Execution
+# Source owner in Splunk export: saneipour
+# Review before publication: validate SPL and remove internal environment details.
+
+index=wineventlog sourcetype=Sysmon EventCode=1 process_name=powershell.exe Invoke* OR IEX OR Download*
+| table _time, host, ProcessID, process, CommandLine, ParentProcessId, ParentImage, ParentCommandLine
