@@ -1,0 +1,9 @@
+# Detects registry changes to the Windows screensaver configuration.
+# MITRE ATT&CK Technique: T1546.002 - Screensaver
+# Tactic: Persistence (TA0003)
+# Review before publication: validate Sysmon event IDs and TargetObject field mappings.
+
+index=wineventlog sourcetype=Sysmon
+(EventCode=12 OR EventCode=13 OR EventCode=14)
+TargetObject="*\\Software\\Policies\\Microsoft\\Windows\\Control Panel\\Desktop\\SCRNSAVE.EXE"
+| table _time host user EventCode TargetObject Details
