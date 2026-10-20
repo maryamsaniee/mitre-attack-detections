@@ -1,5 +1,8 @@
-# MITRE ATT&CK Technique: T1218.001
-# Tactic: Defense Evasion
-# Review before publication: validate event coverage and remove internal environment details.
+# Detects execution of hh.exe, the Windows HTML Help executable, which may be abused to execute malicious CHM content.
+# MITRE ATT&CK Technique: T1218.001 - Compiled HTML File
+# Tactic: Defense Evasion (TA0005)
+# Review before publication: validate Sysmon Event ID 1 field mappings and investigate suspicious command-line arguments.
 
-index=wineventlog sourcetype=Sysmon EventCode=1 (Image="C:\\Windows\\syswow64\\hh.exe" OR Image="C:\\Windows\\system32\\hh.exe")
+index=windows_logs sourcetype=Sysmon EventCode=1
+| where like(lower(Image), "%\\hh.exe")
+| table _time host User Image CommandLine ParentImage
