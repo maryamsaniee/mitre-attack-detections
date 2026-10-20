@@ -5,4 +5,4 @@
 search index=wineventlog sourcetype=sysmon  EventDescription="Process Create" EventCode=1 parent_process_exec IN("*EXCEL.EXE","winword.exe","outlook.exe")
 | table Image,process_name,parent_process_exec,cmdline,Computer,CurrentDirectory
 | dedup Image,process_name,parent_process_exec,cmdline,Computer,CurrentDirectory
-| search NOT process_name IN("EXCEL.EXE","winword.exe")
+| search NOT process_name IN("EXCEL.EXE","winword.exe","outlook.exe")
