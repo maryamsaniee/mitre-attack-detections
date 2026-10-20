@@ -1,0 +1,5 @@
+# MITRE ATT&CK Technique: T1140
+# Tactic: Defense Evasion
+# Review before publication: validate field mappings and remove internal environment details.
+
+index=wineventlog sourcetype=Sysmon EventCode=1 process_name="certutil.exe" CommandLine="* -decode AppData\\*"
