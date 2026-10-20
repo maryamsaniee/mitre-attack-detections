@@ -1,6 +1,26 @@
-# MITRE ATT&CK: T1059.001
-# Tactic: Execution
-# Review before publication: validate SPL, macro dependencies, and internal paths.
+# Detects potentially suspicious PowerShell command-line patterns associated with hidden execution, encoded commands, downloads, and in-memory execution.
+# MITRE ATT&CK Technique: T1059.001 - PowerShell
+# Tactic: Execution (TA0002)
+# Review before publication: validate sysmon macro field mappings, tune benign administrative activity, and verify the SCCM exclusion.
 
-search `sysmon` EventCode=1 process_name=powershell.exe (*-W*Hidden* OR *-nologo* OR *IEX* OR *Out-MiniDump* OR *-enc* OR *-EncodedCommand* OR *DownloadString* OR *DownloadFile* OR *DownloadData* OR *ShellExecute* OR *Invoke-Mimikatz* OR *schtasks*create* OR *Webclient* OR *FromBase64String* OR *IO.StreamReader* OR *IO.MemoryStream* OR *IO.Compression.DeflateStream*) NOT (C:\windows\ccm\)
-| table _time, host, process, CommandLine, ParentProcessId, ParentImage, ParentCommandLine, User
+`sysmon` EventCode=1 process_name="powershell.exe"
+(
+    "*-W*Hidden*"
+    OR "*-nologo*"
+    OR "*IEX*"
+    OR "*Out-MiniDump*"
+    OR "*-enc*"
+    OR "*-EncodedCommand*"
+    OR "*DownloadString*"
+    OR "*DownloadFile*"
+    OR "*DownloadData*"
+    OR "*ShellExecute*"
+    OR "*Invoke-Mimikatz*"
+    OR "*schtasks*create*"
+    OR "*Webclient*"
+    OR "*FromBase64String*"
+    OR "*IO.StreamReader*"
+    OR "*IO.MemoryStream*"
+    OR "*IO.Compression.DeflateStream*"
+)
+| table _time host process CommandLine ParentProcessId ParentImage ParentCommandLine User
