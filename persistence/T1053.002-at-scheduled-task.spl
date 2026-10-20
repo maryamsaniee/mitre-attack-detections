@@ -1,0 +1,7 @@
+# Detects execution of at.exe, which can be used to schedule commands.
+# MITRE ATT&CK Technique: T1053.002 - At
+# Tactic: Persistence (TA0003)
+# Review before publication: validate Sysmon field mappings and confirm the command's scheduling behavior.
+
+index=wineventlog sourcetype=Sysmon EventCode=1 Image="*\\at.exe"
+| table _time host User Image CommandLine ParentImage
