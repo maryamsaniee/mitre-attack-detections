@@ -1,0 +1,13 @@
+# Detects modifications to registry keys that may be used to establish persistence, load DLLs, or alter authentication components.
+# MITRE ATT&CK Techniques: T1547, T1546.009, T1574.011
+# Tactic: Persistence (TA0003)
+# Review before publication: validate registry field mappings and confirm registry path coverage.
+
+index=windows_logs (EventCode=4657 OR object_category="registry")
+| eval path=if(EventCode=4657,Object_Name,registry_path)
+| eval type=if(EventCode=4657,Operation_Type,EventType)
+| eval process=if(EventCode=4657,Process_Name,Image)
+| eval key=if(EventCode=4657,Object_Name,registry_key_name)
+| eval value=if(EventCode=4657,Object_Value_Name,registry_value_name)
+| search path IN("*currentversion\\run*","*currentVersion\\Windows\\Appinit_Dlls*","CurrentVersion\\Winlogon\\Shell*","*CurrentVersion\\Winlogon\\Userinit*","*CurrentVersion\\Winlogon\\VmApplet*","*currentversion\\policies\\explorer\\run*","*CurrentControlSet\\Services*","*\\CurrentControlSet\\Control\\Lsa\\*","*\\CurrentControlSet\\Control\\Session Manager\\*","*Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options*","*\\SOFTWARE\\Microsoft\\Netsh\\*","*currentversion\\runservices*")
+| stats values(path) as path, values(process) as process, values(user) as user, values(Old_Value) as old_value, values(New_Value) as New_Value by source,type,dest,key,value
