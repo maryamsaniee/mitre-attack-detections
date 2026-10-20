@@ -1,0 +1,8 @@
+# Detection: Identify processes spawned by Excel, Word, or Outlook, excluding Excel and Word child processes.
+# MITRE ATT&CK Technique: T1204.002 - Malicious File
+# Review before publication: Validate Sysmon Event ID 1 field mappings and confirm the ATT&CK technique mapping; parent-child process behavior alone does not prove malicious file execution.
+
+search index=wineventlog sourcetype=sysmon  EventDescription="Process Create" EventCode=1 parent_process_exec IN("*EXCEL.EXE","winword.exe","outlook.exe")
+| table Image,process_name,parent_process_exec,cmdline,Computer,CurrentDirectory
+| dedup Image,process_name,parent_process_exec,cmdline,Computer,CurrentDirectory
+| search NOT process_name IN("EXCEL.EXE","winword.exe")
