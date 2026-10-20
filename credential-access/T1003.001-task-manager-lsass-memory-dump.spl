@@ -1,5 +1,8 @@
-# MITRE ATT&CK Technique: T1003.001
-# Tactic: Credential Access
-# Review before publication: validate Sysmon file-creation events and field mappings.
 
-`sysmon` EventCode=11 TargetFilename="*lsass*.dmp" Image="C:\\Windows\\*\\taskmgr.exe"
+# Detects potential LSASS memory dump file creation associated with Task Manager.
+# MITRE ATT&CK Technique: T1003.001 - LSASS Memory
+# Tactic: Credential Access (TA0006)
+# Review before publication: validate Sysmon Event ID 11 field mappings and test file path patterns.
+
+`sysmon` EventCode=11 TargetFilename="*lsass*.dmp" Image="*\\taskmgr.exe"
+| table _time host Image TargetFilename
