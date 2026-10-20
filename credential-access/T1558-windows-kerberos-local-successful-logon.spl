@@ -1,8 +1,0 @@
-# MITRE ATT&CK Technique: T1558
-# Tactic: Credential Access
-# Review before publication: validate Windows Security event fields and investigate potential false positives.
-
-index=windows_logs source="WinEventLog:Security" EventCode=4624 Logon_Type=3 Authentication_Package=Kerberos action=success src_ip=127.0.0.1
-| stats count min(_time) as firstTime max(_time) as lastTime by dest, subject, action, Security_ID, user, Account_Name, src_ip
-| `ctime(firstTime)`
-| `ctime(lastTime)`

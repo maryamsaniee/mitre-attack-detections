@@ -1,0 +1,10 @@
+# Detects potential Kerberoasting by identifying multiple Kerberos service-ticket requests using RC4 encryption.
+# MITRE ATT&CK Technique: T1558.003 - Kerberoasting
+# Tactic: Credential Access (TA0006)
+# Review before publication: validate Event ID 4769 field mappings, encryption-type values, and environment-specific thresholds.
+
+index=windows_logs EventCode=4769 Ticket_Encryption_Type="0x17"
+| stats count dc(Service_Name) as distinct_services values(Service_Name) as service_names by Account_Name Client_Address
+| where distinct_services >= 5
+| sort - distinct_services
+| table Account_Name Client_Address count distinct_services service_names
