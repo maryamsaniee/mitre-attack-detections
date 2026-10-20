@@ -1,0 +1,5 @@
+# Detection: Detect execution of common network sniffing and packet capture tools.
+# MITRE ATT&CK Technique: T1040 - Network Sniffing
+# Review before publication: Validate Sysmon process-creation telemetry, field names, and exclusions in the target environment.
+
+index=wineventlog sourcetype=Sysmon EventCode=1 (Image="*tshark.exe" OR Image="*windump.exe" OR (Image="*logman.exe" AND ParentImage!="?" AND ParentImage!="C:\Program Files\Windows Event Reporting\Core\EventReporting.AgentService.exe") OR Image="*tcpdump.exe" OR Image="*wprui.exe" OR Image="*wpr.exe")
