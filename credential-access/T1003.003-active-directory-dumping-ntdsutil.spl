@@ -1,0 +1,5 @@
+# MITRE ATT&CK Technique: T1003.003
+# Tactic: Credential Access
+# Review before publication: validate Sysmon event fields and remove internal environment details.
+
+`sysmon` EventCode=11 TargetFilename="*ntds.dit" Image="*ntdsutil.exe"
