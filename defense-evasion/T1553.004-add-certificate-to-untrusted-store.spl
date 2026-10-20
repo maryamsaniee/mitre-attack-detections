@@ -1,0 +1,5 @@
+# MITRE ATT&CK Technique: T1553.004
+# Tactic: Defense Evasion
+# Review before publication: validate Endpoint.Processes data model and field mappings.
+
+| tstats count min(_time) as firstTime values(Processes.process) as process max(_time) as lastTime from datamodel=Endpoint.Processes where Processes.process_name=*certutil* (Processes.process=*-addstore*) by Processes.parent_process Processes.process_name Processes.user
