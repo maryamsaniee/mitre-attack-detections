@@ -1,5 +1,8 @@
-# MITRE ATT&CK Technique: T1003.003
-# Tactic: Credential Access
-# Review before publication: validate Sysmon event fields and remove internal environment details.
 
-`sysmon` EventCode=11 TargetFilename="*ntds.dit" Image="*ntdsutil.exe"
+# Detects potential creation of an NTDS.dit file by ntdsutil, which may indicate Active Directory credential database dumping.
+# MITRE ATT&CK Technique: T1003.003 - NTDS
+# Tactic: Credential Access (TA0006)
+# Review before publication: validate Sysmon Event ID 11 field mappings and test file path patterns.
+
+`sysmon` EventCode=11 TargetFilename="*ntds.dit" Image="*\\ntdsutil.exe"
+| table _time host Image TargetFilename
