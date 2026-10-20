@@ -1,0 +1,9 @@
+
+# Detects remote thread creation that may indicate an attempt to access LSASS for credential dumping.
+# MITRE ATT&CK Technique: T1003.001
+# Tactic: Credential Access
+# Review before publication: verify Sysmon Event ID 8 field mappings and validate TargetImage filtering.
+
+index=windows_logs sourcetype=Sysmon EventCode=8
+| where like(lower(TargetImage), "%\\lsass.exe")
+| fields _time host SourceImage TargetImage Computer StartModule StartFunction
