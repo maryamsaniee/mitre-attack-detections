@@ -1,0 +1,6 @@
+# Detects schtasks.exe commands for changing, creating, deleting, or running scheduled tasks on a remote system.
+# MITRE ATT&CK Technique: T1053.005 - Scheduled Task
+# Tactic: Persistence (TA0003)
+# Review before publication: validate Sysmon field mappings and command-line patterns.
+
+`sysmon` process_name="schtasks.exe" CommandLine IN("*/Change*","*/Create*","*/Delete*","*/Run*") CommandLine="*/s *"| stats count by Computer,CommandLine
