@@ -1,5 +1,8 @@
-# MITRE ATT&CK Technique: T1218.005
-# Tactic: Defense Evasion
-# Review before publication: verify macro dependencies and remove internal environment details.
+# Detects shell or scripting processes spawned by mshta.exe, which may indicate suspicious use of the Microsoft HTML Application Host.
+# MITRE ATT&CK Technique: T1218.005 - Mshta
+# Tactic: Defense Evasion (TA0005)
+# Review before publication: validate Sysmon Event ID 1 field mappings and macro dependencies.
 
-`sysmon` EventCode=1 ParentImage=*\\mshta.exe (process_name="cmd.exe" OR process_name="powershell.exe" OR process_name="wscript.exe" OR process_name="cscript.exe" OR process_name="sh.exe" OR process_name="bash.exe")
+`sysmon` EventCode=1 ParentImage="*\\mshta.exe"
+(Image="*\\cmd.exe" OR Image="*\\powershell.exe" OR Image="*\\wscript.exe" OR Image="*\\cscript.exe" OR Image="*\\sh.exe" OR Image="*\\bash.exe")
+| table _time host User ParentImage Image CommandLine
