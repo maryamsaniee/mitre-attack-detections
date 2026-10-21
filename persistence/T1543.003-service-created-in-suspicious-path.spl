@@ -1,0 +1,6 @@
+# Detection: Detect service installation where the executable path falls outside specified common locations.
+# MITRE ATT&CK Technique: T1543.003 - Windows Service
+# Review before publication: Validate EventCode 7045 field names, path exclusions, and wildcard behavior in the target environment.
+
+search index=wineventlog EventCode=7045 Service_File_Name = "*\.exe" NOT (Service_File_Name IN ("C:\Windows\*", "C:\Program File*", "C:\Programdata\*", "%systemroot%\*")) Service_Type = "user mode service" 
+| stats count min(_time) as firstTime max(_time) as lastTime by EventCode Service_File_Name Service_Name Service_Start_Type Service_Type
